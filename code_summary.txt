@@ -1,0 +1,130 @@
+This code is an end-to-end lead scoring analysis using machine learning. Here is a summary of the code's functionality and explanation of the major steps:
+
+1. Importing Libraries:
+   - The code begins by importing various Python libraries, including Pandas, NumPy, Matplotlib, Seaborn, Plotly Express, and others, to perform data analysis and machine learning tasks.
+
+2. Reading the Dataset:
+   - The code reads a CSV file named 'Lead Scoring.csv' into a Pandas DataFrame called 'df.'
+
+3. Exploratory Data Analysis (EDA):
+   - The code conducts exploratory data analysis to understand the dataset.
+   - It examines the dataset's shape, information (data types and non-null counts), and displays the first few rows of data.
+   - It also checks for missing values in specific binary categorical columns.
+   - The code performs some data cleaning, such as dropping unnecessary columns, transforming asymmetrical index columns, and binary encoding.
+
+4. Feature Engineering:
+   - The code performs feature engineering, including:
+     - Standardizing 'lead_source' values for better grouping.
+     - Consolidating and simplifying values in certain columns like 'last_activity,' 'last_notable_activity,' and 'specialization.'
+     - Handling 'country' values to categorize non-Indian cities as 'Other.'
+     - Standardizing 'lead_quality' values.
+     - Converting asymmetrical index columns to string data types.
+     - Dropping columns with unique values.
+     - Adding a new column, 'amount_missing,' to represent the number of missing values in each row.
+
+5. Handling Outliers:
+   - The code caps outliers in specific numeric columns, such as 'totalvisits,' 'page_views_per_visit,' and 'total_time_spent_on_website,' by replacing them with the 95th percentile value.
+
+6. Data Preprocessing:
+   - The code prepares the data for modeling using pipelines, including one-hot encoding for categorical columns, standard scaling for numeric columns, and handling missing values.
+
+7. Model Selection and Cross-Validation:
+   - The code selects multiple classification models: Logistic Regression, Support Vector Classifier (SVC), Decision Tree, Random Forest, and Gradient Boosting.
+   - It uses cross-validation with stratified k-folds to evaluate model performance and prints various metrics, including F1-score, Precision, Recall, and ROC-AUC score.
+   - Precision-Recall curves are also plotted for each model.
+
+8. Hyperparameter Tuning:
+   - Randomized search is performed to tune hyperparameters for the Logistic Regression, Random Forest, and Gradient Boosting models.
+
+9. Model Evaluation on Test Data:
+   - The code applies the best-tuned Random Forest model to the test dataset.
+   - It evaluates the model's performance using metrics such as Precision, Recall, F1-score, and ROC-AUC score.
+   - Confusion matrices for the tuned and untuned Random Forest models are also displayed for comparison.
+
+10. Lead Scoring:
+    - The code generates lead scores for the test dataset using the tuned Random Forest model's predicted probabilities.
+    - It combines the lead prediction (converted or not) with the lead scores into a results array.
+
+11. Displaying Results:
+    - The results array is displayed, showing lead predictions and corresponding lead scores for the first 10 rows.
+
+Overall, this code performs lead scoring by cleaning, preprocessing, and modeling lead data, with a focus on evaluating model performance and providing a lead scoring mechanism for new data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Loading Data Section
+
+The code begins by importing necessary libraries such as pandas, numpy, matplotlib, seaborn, plotly, warnings, and various modules from scikit-learn for data analysis and machine learning tasks. It also sets some display options for pandas to control how data frames are displayed.
+
+Next, it reads a CSV file ('Lead Scoring.csv') into a pandas DataFrame called 'df' and displays the first few rows, shape, and basic information about the dataset.
+
+It then defines a list called 'binary_cats' containing the names of columns that represent binary categorical features. The code calculates and displays the count of null values, total values, and the percentage of 'Yes' and 'No' values for these binary categorical features.
+
+The code proceeds to split the dataset into a training set ('train') and a test set ('test') using the 'train_test_split' function from scikit-learn. It also displays the shapes of the training and test sets and counts the number of duplicate rows in the training set for identification.
+
+Finally, it displays the value counts of two specific columns, 'Asymmetric Profile Index' and 'Asymmetric Activity Index', from the training set.
+
+
+
+
+
+
+
+# Feature Engineering Section (View)
+
+In this section, the code defines two custom functions: 'data_cleaning' and 'initial_feature_engineering'.
+
+1. 'data_cleaning' function:
+   - Drops the columns 'Prospect ID' and 'Lead Number' from the DataFrame.
+   - Performs transformations on the 'Asymmetric Activity Index' and 'Asymmetric Profile Index' columns.
+   - Encodes binary categorical columns with 'No' as 0 and 'Yes' as 1.
+   - Renames columns by replacing spaces with underscores and converting them to lowercase.
+
+2. 'initial_feature_engineering' function:
+   - Performs feature engineering on the 'lead_source' column, combining similar sources and renaming others.
+   - Modifies the 'last_activity' and 'last_notable_activity' columns by grouping similar activities.
+   - Cleans and preprocesses values in the 'country', 'specialisation', 'how_did_you_hear_about_x_education', 'what_matters_most_to_you_in_choosing_a_course', 'lead_profile', and 'city' columns.
+
+After defining these functions, they are applied to the 'train_clean' DataFrame using the 'FunctionTransformer' from scikit-learn to create the 'train_clean' DataFrame with cleaned and engineered features. Several visualizations and analyses of the data distribution and feature relationships are also present in this section, including bar plots, box plots, and correlation analysis.
+
+
+
+
+
+
+
+
+
+
+# Analysis Section (QA)
+
+In this section, the code performs exploratory data analysis (EDA) and builds machine learning models for lead scoring. It starts by creating a 'null_' DataFrame to analyze missing values in columns.
+
+Then, it defines functions for plotting bar charts to visualise conversion rates by various categorical features, such as 'lead_profile,' 'asymmetrique_profile_score,' 'last_activity,' and more. It also analyzes numerical features like 'total visits,' 'total_time_spent_on_website,' and 'page_views_per_visit' using bar plots and box plots.
+
+Next, the code builds machine learning models:
+- Logistic Regression
+- Support Vector Classifier
+- Decision Tree Classifier
+- Random Forest Classifier
+- Gradient Boosting Classifier
+
+It evaluates these models using cross-validation and displays precision, recall, F1 score, and ROC-AUC score. Precision-Recall curves are also plotted.
+
+The code then performs hyperparameter tuning for the Logistic Regression, Random Forest, and Gradient Boosting models using RandomizedSearchCV. It displays the best parameters and best scores for each model after tuning.
+
+Finally, the code applies the best Random Forest model to the test data, evaluates its performance, and creates a confusion matrix to visualize the results. It also calculates lead scores and predictions.
+
+The overall purpose of this code is to preprocess and analyze lead data, build predictive models, and evaluate their performance for lead scoring.
